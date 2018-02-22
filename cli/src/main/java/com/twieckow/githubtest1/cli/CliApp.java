@@ -1,4 +1,6 @@
-package com.twieckow.githubtest1.core;
+package com.twieckow.githubtest1.cli;
+
+import com.twieckow.githubtest1.core.RpnCalculator;
 
 import java.math.BigDecimal;
 
