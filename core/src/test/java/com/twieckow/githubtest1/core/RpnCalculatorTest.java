@@ -1,5 +1,6 @@
 package com.twieckow.githubtest1.core;
 
+import com.twieckow.githubtest1.core.exception.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -13,8 +14,7 @@ public class RpnCalculatorTest {
 
    private RpnCalculator testObj = new RpnCalculator();
 
-
-   @Test(expected = IllegalArgumentException.class)
+   @Test(expected = MalformedRpnExpression.class)
    public void shouldThrowExceptionWhenEmptyInput() {
       //given
       final String input = "  ";
@@ -25,7 +25,7 @@ public class RpnCalculatorTest {
       //then throw exception
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test(expected = MalformedRpnExpression.class)
    public void shouldThrowExceptionWhenIllegalNumberOfParams() {
       //given
       final String input = "4 + 2";
@@ -36,8 +36,8 @@ public class RpnCalculatorTest {
       //then throw exception
    }
 
-   @Test(expected = IllegalArgumentException.class)
-   public void shouldThrowExceptionUnsupportedOperator() {
+   @Test(expected = OperatorParsingException.class)
+   public void shouldThrowExceptionWhenUnsupportedOperator() {
       //given
       final String input = "5 6 *";
 
@@ -45,6 +45,29 @@ public class RpnCalculatorTest {
       testObj.calculate(input);
 
       //then throw exception
+   }
+
+   @Test(expected = NumberParsingException.class)
+   public void shouldThrowExceptionWhenWrongFormatOfNumber() {
+      //given
+      final String input = "5 6,5 *";
+
+      //when
+      testObj.calculate(input);
+
+      //then throw exception
+   }
+
+   @Test
+   public void shouldCalculateWhenJustOneNumber() {
+      //given
+      final String input = "23456789";
+
+      //when
+      BigDecimal result = testObj.calculate(input);
+
+      //then
+      assertThat(result).isEqualTo(new BigDecimal("23456789"));
    }
 
    @Test
